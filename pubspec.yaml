@@ -1,0 +1,25 @@
+name: fresh_grpc
+description: An grpc link for token refresh. Built on top of package:grpc and manages authentication tokens transparently.
+repository: https://github.com/amondnet/fresh_grpc
+issue_tracker: https://github.com/amondnet/fresh_grpc
+homepage: https://github.com/amondnet/fresh_grpc
+
+version: 0.1.0
+
+environment:
+  sdk: ">=2.8.0 <3.0.0"
+
+dependencies:
+  fresh: ^0.3.0
+  grpc: ^2.9.0
+  http: ^0.12.0
+  meta: ^1.1.8
+  pedantic: ^1.9.0
+
+dev_dependencies:
+  test_coverage: ^0.5.0
+  mockito: ^4.1.1
+  mocktail: ^0.1.1
+  test: ^1.14.3
+  very_good_analysis: ^2.0.1
+
