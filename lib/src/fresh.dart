@@ -2,12 +2,11 @@ import 'package:fresh/fresh.dart';
 import 'package:fresh_grpc/fresh_grpc.dart';
 import 'package:grpc/grpc.dart';
 import 'package:http/http.dart' as http;
-import 'package:meta/meta.dart';
 import 'package:pedantic/pedantic.dart' show unawaited;
 
-typedef ShouldRefresh<T> = bool Function(T);
+typedef ShouldRefresh<T> = bool Function(T token);
 
-typedef RefreshToken<T> = Future<T> Function(T, String uri);
+typedef RefreshToken<T> = Future<T> Function(T? token, String? uri);
 typedef ObtainToken<T> = Future<T> Function(http.Client client, String uri);
 
 /// {@template fresh}
@@ -21,16 +20,12 @@ typedef ObtainToken<T> = Future<T> Function(http.Client client, String uri);
 /// {@endtemplate}
 class FreshGrpc<T> extends BaseAuthenticator with FreshMixin<T> {
   FreshGrpc({
-    @required TokenStorage<T> tokenStorage,
-    @required ObtainToken<T> obtainToken,
-    @required RefreshToken<T> refreshToken,
-    @required ShouldRefresh<T> shouldRefresh,
-    TokenHeaderBuilder<T> tokenHeader,
-  })  : assert(tokenStorage != null),
-        assert(obtainToken != null),
-        assert(refreshToken != null),
-        assert(shouldRefresh != null),
-        _obtainToken = obtainToken,
+    required TokenStorage<T> tokenStorage,
+    required ObtainToken<T> obtainToken,
+    required RefreshToken<T> refreshToken,
+    required ShouldRefresh<T> shouldRefresh,
+    TokenHeaderBuilder<T>? tokenHeader,
+  })  : _obtainToken = obtainToken,
         _refreshToken = refreshToken,
         _tokenHeader = tokenHeader,
         _shouldRefresh = shouldRefresh {
@@ -38,11 +33,11 @@ class FreshGrpc<T> extends BaseAuthenticator with FreshMixin<T> {
   }
 
   static FreshGrpc<OAuth2Token> oAuth2({
-    @required TokenStorage<OAuth2Token> tokenStorage,
-    @required ObtainToken<OAuth2Token> obtainToken,
-    @required RefreshToken<OAuth2Token> refreshToken,
-    ShouldRefresh shouldRefresh,
-    TokenHeaderBuilder<OAuth2Token> tokenHeader,
+    required TokenStorage<OAuth2Token> tokenStorage,
+    required ObtainToken<OAuth2Token> obtainToken,
+    required RefreshToken<OAuth2Token> refreshToken,
+    required ShouldRefresh<OAuth2Token> shouldRefresh,
+    TokenHeaderBuilder<OAuth2Token>? tokenHeader,
   }) {
     return FreshGrpc<OAuth2Token>(
       refreshToken: refreshToken,
@@ -60,11 +55,11 @@ class FreshGrpc<T> extends BaseAuthenticator with FreshMixin<T> {
 
   final ObtainToken<T> _obtainToken;
   final RefreshToken<T> _refreshToken;
-  final TokenHeaderBuilder<T> _tokenHeader;
-  final ShouldRefresh _shouldRefresh;
+  final TokenHeaderBuilder<T>? _tokenHeader;
+  final ShouldRefresh<T> _shouldRefresh;
 
-  String _lastUri;
-  Future<void> _call;
+  String? _lastUri;
+  Future<void>? _call;
 
   @override
   Future<void> obtainAccessCredentials(String uri) async {
@@ -90,8 +85,8 @@ class FreshGrpc<T> extends BaseAuthenticator with FreshMixin<T> {
     if (currentToken == null) {
       throw GrpcError.unauthenticated('Require Authentication.');
     }
-    final tokenHeaders = currentToken != null && _tokenHeader != null
-        ? _tokenHeader(currentToken)
+    final tokenHeaders = _tokenHeader != null
+        ? _tokenHeader!(currentToken)
         : const <String, String>{};
 
     metadata.addAll(tokenHeaders);

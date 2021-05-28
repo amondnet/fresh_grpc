@@ -10,13 +10,13 @@ class MockOAuth2Token extends Mock implements OAuth2Token {}
 
 class MockToken extends Mock implements OAuth2Token {}
 
-Future<T> emptyRefreshToken<T>(dynamic _, dynamic __) async => null;
+Future<T?> emptyRefreshToken<T>(dynamic _, dynamic __) async => null;
 
-Future<T> emptyObtainToken<T>(dynamic _, dynamic __) async => null;
+Future<T?> emptyObtainToken<T>(dynamic _, dynamic __) async => null;
 
 void main() {
   group('Fresh', () {
-    TokenStorage<OAuth2Token> tokenStorage;
+    late TokenStorage<OAuth2Token> tokenStorage;
 
     setUpAll(() {
       registerFallbackValue<OAuth2Token>(MockToken());
@@ -39,8 +39,8 @@ void main() {
           final token = MockToken();
           final fresh = FreshGrpc.oAuth2(
               tokenStorage: tokenStorage,
-              refreshToken: emptyRefreshToken,
-              obtainToken: emptyObtainToken);
+              refreshToken: emptyRefreshToken as Future<OAuth2Token> Function(OAuth2Token, String?),
+              obtainToken: emptyObtainToken as Future<OAuth2Token> Function(Client, String));
           await fresh.setToken(token);
           verify(() => tokenStorage.write(token)).called(1);
         });
@@ -51,7 +51,7 @@ void main() {
           when(() => tokenStorage.delete()).thenAnswer((_) async => null);
           final fresh = FreshGrpc.oAuth2(
             tokenStorage: tokenStorage,
-            refreshToken: emptyRefreshToken,
+            refreshToken: emptyRefreshToken as Future<OAuth2Token> Function(OAuth2Token, String?),
           );
           await fresh.setToken(null);
           await expectLater(
