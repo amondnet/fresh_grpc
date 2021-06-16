@@ -1,7 +1,7 @@
-A library for Dart developers.
+# fresh_grpc
 
-Created from templates made available by Stagehand under a BSD-style
-[license](https://github.com/dart-lang/stagehand/blob/master/LICENSE).
+[![coverage](https://github.com/amondnet/fresh_grpc/blob/master/coverage_badge.svg)](https://github.com/amondnet/fresh_grpc/actions)
+
 
 ## Usage
 
