@@ -3,14 +3,14 @@ name: fresh_dio
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - ".github/workflows/fresh_dio.yaml"
       - "lib/**"
       - "test/**"
   pull_request:
     branches:
-      - master
+      - main
     paths:
       - ".github/workflows/fresh_dio.yaml"
       - "lib/**"

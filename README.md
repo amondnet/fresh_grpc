@@ -1,6 +1,6 @@
 # fresh_grpc
 
-[![coverage](https://github.com/amondnet/fresh_grpc/blob/master/coverage_badge.svg)](https://github.com/amondnet/fresh_grpc/actions)
+[![coverage](https://github.com/amondnet/fresh_grpc/blob/main/coverage_badge.svg)](https://github.com/amondnet/fresh_grpc/actions)
 
 
 ## Usage
