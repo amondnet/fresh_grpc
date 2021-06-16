@@ -1,3 +1,7 @@
+## 0.3.0
+
+- feat: retry
+
 ## 0.2.0
 
 - feat: null safety

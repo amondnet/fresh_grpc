@@ -120,15 +120,11 @@ class FreshGrpc<T> extends $grpc.BaseAuthenticator with FreshMixin<T> {
     }
   }
 
-  /// Call [unary] retrying so long as [_shouldRefresh] return `true` for the exception
+  /// Call [rpc] retrying so long as [_shouldRefresh] return `true` for the exception
   /// thrown.
   ///
   /// At every retry the [onRetry] function will be called (if given). The
-  /// function [fn] will be invoked at-most [this.attempts] times.
-  ///
-  /// If no [retryIf] function is given this will retry any for any [Exception]
-  /// thrown. To retry on an [Error], the error must be caught and _rethrown_
-  /// as an [Exception].
+  /// function [rpc] will be invoked at-most [this.attempts] times.
   Future<R> retryUnary<R, Q>(
       $grpc.ResponseFuture<R> Function(Q request, {$grpc.CallOptions? options})
           rpc,

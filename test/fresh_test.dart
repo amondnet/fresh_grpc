@@ -261,29 +261,29 @@ void main() {
           fail('expect success');
         }
       });
-    });
 
-    group('close', () {
-      test('should close streams', () async {
-        when(() => tokenStorage.read()).thenAnswer((_) async => null);
-        when(() => tokenStorage.write(any())).thenAnswer((_) async => null);
-        final fresh = FreshGrpc.oAuth2(
-          tokenStorage: tokenStorage,
-          refreshToken: emptyRefreshToken,
-          obtainToken: (_, __) async => (await tokenStorage.read())!,
-        );
+      group('close', () {
+        test('should close streams', () async {
+          when(() => tokenStorage.read()).thenAnswer((_) async => null);
+          when(() => tokenStorage.write(any())).thenAnswer((_) async => null);
+          final fresh = FreshGrpc.oAuth2(
+            tokenStorage: tokenStorage,
+            refreshToken: emptyRefreshToken,
+            obtainToken: (_, __) async => (await tokenStorage.read())!,
+          );
 
-        final mockToken = MockToken();
-        await fresh.setToken(mockToken);
-        await fresh.close();
+          final mockToken = MockToken();
+          await fresh.setToken(mockToken);
+          await fresh.close();
 
-        await expectLater(
-          fresh.authenticationStatus,
-          emitsInOrder(<Matcher>[
-            equals(AuthenticationStatus.authenticated),
-            emitsDone,
-          ]),
-        );
+          await expectLater(
+            fresh.authenticationStatus,
+            emitsInOrder(<Matcher>[
+              equals(AuthenticationStatus.authenticated),
+              emitsDone,
+            ]),
+          );
+        });
       });
     });
   });
