@@ -192,7 +192,6 @@ void main() {
       test('returns error when token is null', () async {
         when(() => tokenStorage.read()).thenAnswer((_) async => null);
         when(() => tokenStorage.write(any())).thenAnswer((_) async => null);
-        final error = MockGrpcError();
         final fresh = FreshGrpc.oAuth2(
           tokenStorage: tokenStorage,
           refreshToken: emptyRefreshToken,
