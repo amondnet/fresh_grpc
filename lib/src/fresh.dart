@@ -4,7 +4,6 @@ import 'package:fresh/fresh.dart';
 import 'package:fresh_grpc/fresh_grpc.dart';
 import 'package:grpc/grpc.dart' as $grpc;
 import 'package:http/http.dart' as http;
-import 'package:pedantic/pedantic.dart' show unawaited;
 import 'package:retry/retry.dart';
 
 /// Signature for `shouldRefresh` on [Fresh].

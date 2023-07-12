@@ -2,11 +2,10 @@ import 'dart:async';
 
 import 'package:fresh_grpc/fresh_grpc.dart';
 import 'package:grpc/grpc.dart';
+import 'package:helloworld/helloworld.dart';
 import 'package:http/http.dart' as $http;
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
-
-import 'package:helloworld/helloworld.dart';
 
 class MockTokenStorage<T> extends Mock implements TokenStorage<T> {}
 
@@ -52,9 +51,9 @@ void main() {
     final request = HelloRequest()..name = 'world';
 
     setUpAll(() {
-      registerFallbackValue<OAuth2Token>(MockToken());
-      registerFallbackValue<MockToken>(MockToken());
-      registerFallbackValue<HelloRequest>(request);
+      registerFallbackValue(MockToken());
+      registerFallbackValue(MockToken());
+      registerFallbackValue(request);
 
       //registerFallbackValue<Options>(null);
       //registerFallbackValue<RequestOptions>(FakeRequestOptions());
